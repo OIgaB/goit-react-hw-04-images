@@ -1,4 +1,4 @@
-import { Component } from "react";                // для класів
+import { useEffect } from "react";                // для класів
 import { createPortal } from "react-dom";                   
 import PropTypes from 'prop-types';
 import { StyledOverlay, StyledModal } from "./styled";
@@ -6,39 +6,40 @@ import { StyledOverlay, StyledModal } from "./styled";
 const modalRoot = document.querySelector('#modal-root');
 
 
-export class Modal extends Component {    
+export const Modal = ({ largeImageURL, tags, onClose }) => {    
 
-    componentDidMount() {
-        window.addEventListener('keydown', this.handleKeyDown);
-    }
+    useEffect(() => {
+        const handleKeyDown = event => {
+            console.log('in useEffect - щось натисли');
+            if(event.code === 'Escape') {  //закриття модалки кнопкою Escape
+                onClose();
+                console.log('in useEffect - натисли Escape');
+            }
+        }
+        window.addEventListener('keydown', handleKeyDown);
+        console.log('in useEffect');
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown); // при закритті модалки (componentWillUnmount), спрацює тільки цей рядок
+            console.log('in useEffect - return');
+        }
+    }, [onClose]); // спрацює при 1-му рендері (на слухача підписались - відписались - підписались) та зміні пропса onClose(навіть по кліку на бекдроп спрацює return)
 
-    componentWillUnmount() {
-        window.removeEventListener('keydown', this.handleKeyDown);
-    }
 
-    handleKeyDown = event => {
-        if(event.code === 'Escape') {
-            this.props.onClose();
+    const handleBackdropClick = event => {  //закриття модалки кліком на бекдроп
+        if(event.currentTarget === event.target) {
+            onClose();
+            console.log('handleBackdropClick');
         }
     }
 
-    handleBackdropClick = event => {
-        if(event.currentTarget === event.target) (
-            this.props.onClose()
-        )
-    }
-
-    render() {
-        const { largeImageURL, tags } = this.props;
-        return createPortal(
-            <StyledOverlay onClick={this.handleBackdropClick}>
-                <StyledModal>
-                    <img src={largeImageURL} alt={tags} width='900'/>
-                </StyledModal>
-            </StyledOverlay>,
-            modalRoot,
-        );
-    }
+    return createPortal(
+        <StyledOverlay onClick={handleBackdropClick}>
+            <StyledModal>
+                <img src={largeImageURL} alt={tags} width='900'/>
+            </StyledModal>
+        </StyledOverlay>,
+        modalRoot,
+    );
 }
 
 Modal.propTypes = {

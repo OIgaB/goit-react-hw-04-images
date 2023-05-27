@@ -1,38 +1,31 @@
 //Компонент елемента списку із зображенням
 
-import { Component } from "react";                     // для класів
+import { useState } from "react";                     // для класів
 import { Modal } from '../Modal/Modal';
 import PropTypes from 'prop-types';
 import { StyledImageGalleryItem, Image } from "./styled";
 
 
-export class ImageGalleryItem extends Component {      
-    state = {
-        showModal: false,
+export const ImageGalleryItem = ({ webformatURL, largeImageURL, tags }) => {    
+    
+    const [showModal, setShowModal] = useState(false);
+
+    const toggleModal = () => {
+        setShowModal(!showModal);
     }
 
-    toggleModal = () => {
-        this.setState(({ showModal }) => ({ 
-            showModal: !showModal, 
-        }));
+    const handleImgClick = () => {
+        toggleModal();  // запуск модалки: showModal = true
     }
 
-    handleImgClick = () => {
-        this.toggleModal();  // запуск модалки
-    }
-
-    render() {
-        const { handleImgClick, toggleModal } = this;
-        const { webformatURL, largeImageURL, tags } = this.props;
-        return (
-            <>
-                <StyledImageGalleryItem onClick={handleImgClick}>
-                    <Image src={webformatURL} alt={tags} loading="lazy" />
-                </StyledImageGalleryItem>
-                {this.state.showModal && <Modal largeImageURL={largeImageURL} tags={tags} onClose={toggleModal} />}
-            </>
-        );
-    }
+    return (
+        <>
+            <StyledImageGalleryItem onClick={handleImgClick}>
+                <Image src={webformatURL} alt={tags} loading="lazy" />
+            </StyledImageGalleryItem>
+            {showModal && <Modal largeImageURL={largeImageURL} tags={tags} onClose={toggleModal} />}
+        </>
+    );
 }
 
 ImageGalleryItem.propTypes = {
