@@ -29,7 +29,7 @@ export class ImageGalleryItem extends Component {
                 <StyledImageGalleryItem onClick={handleImgClick}>
                     <Image src={webformatURL} alt={tags} loading="lazy" />
                 </StyledImageGalleryItem>
-                {this.state.showModal && <Modal largeImageURL={largeImageURL} name={tags} onClose={toggleModal} />}
+                {this.state.showModal && <Modal largeImageURL={largeImageURL} tags={tags} onClose={toggleModal} />}
             </>
         );
     }
