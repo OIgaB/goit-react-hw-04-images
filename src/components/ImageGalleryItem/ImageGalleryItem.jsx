@@ -1,6 +1,6 @@
 //Компонент елемента списку із зображенням
 
-import { useState } from "react";                     // для класів
+import { useState } from "react";                  
 import { Modal } from '../Modal/Modal';
 import PropTypes from 'prop-types';
 import { StyledImageGalleryItem, Image } from "./styled";

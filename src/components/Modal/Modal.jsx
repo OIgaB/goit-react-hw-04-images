@@ -1,4 +1,4 @@
-import { useEffect } from "react";                // для класів
+import { useEffect } from "react";            
 import { createPortal } from "react-dom";                   
 import PropTypes from 'prop-types';
 import { StyledOverlay, StyledModal } from "./styled";
