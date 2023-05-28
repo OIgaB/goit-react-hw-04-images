@@ -1,32 +1,27 @@
-import { Component } from "react";  // для класів
+import { useState } from "react";  
 import { Report } from 'notiflix/build/notiflix-report-aio';                   
 import PropTypes from 'prop-types';
 import { StyledHeader, StyledForm, StyledButton, SearchIcon, StyledBtnLabel, StyledInput } from "./styled";
 
 
-export class Searchbar extends Component {       // для класів
+export const Searchbar = ({ onSubmit }) => {   //отримано з App
+    const [query, setQuery] = useState('');
 
-    state = { 
-        query: '',
+    const handleChange = (event) => {
+        setQuery(event.target.value.toLowerCase());  
     }
 
-    handleChange = (event) => {
-        this.setState({ query: event.target.value.toLowerCase() });  
-    }
-
-    handleFormSubmit = (event) => {
+    const handleFormSubmit = (event) => {
         event.preventDefault();
 
-        if(this.state.query.trim() === '') {
+        if(query.trim() === '') {
             Report.failure('Enter your request.');
             return;
         }
-        this.props.onSubmit(this.state.query);  //дані передаються в App
-        this.setState({ query: '' });  
+        onSubmit(query);  // передача даних в App
+        setQuery('');  
     }
 
-    render() {
-        const { handleFormSubmit, handleChange } = this;
         return (
             <StyledHeader>
                 <StyledForm onSubmit={handleFormSubmit}>
@@ -38,16 +33,16 @@ export class Searchbar extends Component {       // для класів
 
                     <StyledInput
                         type="text"
-                        value={this.state.query} // контрольований input (без цього reset не зробиш)
+                        value={query} // контрольований input (без цього reset не зробиш)
                         autoComplete="off"
                         autoFocus
                         placeholder="Search images and photos"
-                        onChange={handleChange}
+                        onChange={handleChange} //або без додаткової ф-ції: 
+                        // onChange={event => setQuery(event.target.value.toLowerCase())}
                     />
                 </StyledForm>
             </StyledHeader>
         );
-    }
 }
 
 Searchbar.propTypes = {

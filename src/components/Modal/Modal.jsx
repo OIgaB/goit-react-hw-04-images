@@ -9,26 +9,23 @@ const modalRoot = document.querySelector('#modal-root');
 export const Modal = ({ largeImageURL, tags, onClose }) => {    
 
     useEffect(() => {
-        const handleKeyDown = event => {
-            console.log('in useEffect - щось натисли');
+        const handleKeyDown = event => { 
             if(event.code === 'Escape') {  //закриття модалки кнопкою Escape
                 onClose();
-                console.log('in useEffect - натисли Escape');
             }
         }
         window.addEventListener('keydown', handleKeyDown);
-        console.log('in useEffect');
+
         return () => {
             window.removeEventListener('keydown', handleKeyDown); // при закритті модалки (componentWillUnmount), спрацює тільки цей рядок
-            console.log('in useEffect - return');
         }
-    }, [onClose]); // спрацює при 1-му рендері (на слухача підписались - відписались - підписались) та зміні пропса onClose(навіть по кліку на бекдроп спрацює return)
+    }, [onClose]); 
+    // useEffect спрацює при 1-му рендері (на слухача підписались - відписались - підписались(?чому)) та зміні пропса onClose 
 
-
+    
     const handleBackdropClick = event => {  //закриття модалки кліком на бекдроп
         if(event.currentTarget === event.target) {
-            onClose();
-            console.log('handleBackdropClick');
+            onClose();  // запустить useEffect - тільки return
         }
     }
 

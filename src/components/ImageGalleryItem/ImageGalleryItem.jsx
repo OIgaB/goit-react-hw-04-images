@@ -14,13 +14,13 @@ export const ImageGalleryItem = ({ webformatURL, largeImageURL, tags }) => {
         setShowModal(!showModal);
     }
 
-    const handleImgClick = () => {
-        toggleModal();  // запуск модалки: showModal = true
-    }
+    // const handleImgClick = () => {
+    //     toggleModal();  // запуск модалки: showModal = true
+    // }
 
     return (
         <>
-            <StyledImageGalleryItem onClick={handleImgClick}>
+            <StyledImageGalleryItem onClick={() => toggleModal()}>
                 <Image src={webformatURL} alt={tags} loading="lazy" />
             </StyledImageGalleryItem>
             {showModal && <Modal largeImageURL={largeImageURL} tags={tags} onClose={toggleModal} />}
