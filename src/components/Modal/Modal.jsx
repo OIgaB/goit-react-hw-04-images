@@ -19,8 +19,7 @@ export const Modal = ({ largeImageURL, tags, onClose }) => {
         return () => {
             window.removeEventListener('keydown', handleKeyDown); // при закритті модалки (componentWillUnmount), спрацює тільки цей рядок
         }
-    }, [onClose]); 
-    // useEffect спрацює при 1-му рендері (на слухача підписались - відписались - підписались(?чому)) та зміні пропса onClose 
+    }, [onClose]); // useEffect спрацює при 1-му рендері та зміні пропса onClose 
 
     
     const handleBackdropClick = event => {  //закриття модалки кліком на бекдроп
